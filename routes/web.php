@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\NewsLetterSubscriptions;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\TestController;
 use App\Http\Controllers\ProfileController;
@@ -17,9 +18,12 @@ use App\Http\Controllers\ProfileController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::get('/test', [TestController::class, 'test'])->name('test');
+
+Route::post('/subscribe', [NewsLetterSubscriptions::class, 'subscribe'])->name('subscribe');
+Route::get('/unsubscribe/{token}', [NewsLetterSubscriptions::class, 'unsubscribe'])->name('unsubscribe');
 
 Route::get('/dashboard', function () {
     return view('dashboard');

@@ -46,6 +46,38 @@
                 </svg>
             </div>
 
+            @if(Session::has('success'))
+            <div class="bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md mt-4"
+                role="alert">
+                <div class="flex items-center">
+                    <div class="py-1">
+                        <svg class="fill-current h-6 w-6 text-teal-500 mr-4" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20">
+                            <path
+                                d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+                        </svg>
+                    </div>
+                    <p class="text-sm">{{ Session::get('success') }}</p>
+                </div>
+            </div>
+            @endif
+
+            @if(Session::has('error'))
+            <div class="bg-red-50 dark:bg-red-800/20 border-t-4 border-red-500 rounded-b text-red-800 px-4 py-3 shadow-md mt-4"
+                role="alert">
+                <div class="flex items-center">
+                    <div class="py-1">
+                        <svg class="fill-current h-6 w-6 text-red-500 mr-4" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20">
+                            <path
+                                d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z" />
+                        </svg>
+                    </div>
+                    <p class="text-sm">{{ Session::get('error') }}</p>
+                </div>
+            </div>
+            @endif
+
             <div class="mt-16">
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
                     <a href="https://laravel.com/docs"
@@ -104,7 +136,7 @@
                         </svg>
                     </a>
 
-                    <a href="https://laravel-news.com"
+                    <form method="post" action="{{ route('subscribe') }}"
                         class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
                         <div>
                             <div
@@ -119,18 +151,51 @@
                             <h2 class="mt-6 text-xl font-semibold text-gray-900 dark:text-white">Laravel News</h2>
 
                             <p class="mt-4 text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
-                                Laravel News is a community driven portal and newsletter aggregating all of the latest
-                                and most important news in the Laravel ecosystem, including new package releases and
-                                tutorials.
+                                Wanna keep in touch with Laravel master boss that I might be? All you need is to
+                                subscribe to my newsletter with the form down below.
                             </p>
+
+                            <div class="grid grid-cols-2 w-full my-3">
+                                @csrf
+                                <input type="text" name="firstname" value="{{ old('firstname') }}"
+                                    class="bg-transparent outline-none border-none focus:outline-none focus:border-none text-gray-500"
+                                    placeholder="First name">
+                                <input type="text" name="lastname" value="{{ old('lastname') }}"
+                                    class="bg-transparent outline-none border-none focus:outline-none focus:border-none text-gray-500"
+                                    placeholder="Last name">
+
+                                @error("firstname")
+                                <p class=" text-red-400 dark:text-red-800 text-xs col-span-2 pl-2">{{ $message }}</p>
+                                @enderror
+
+                                @error("lastname")
+                                <p class=" text-red-400 dark:text-red-800 text-xs col-span-2 pl-2">{{ $message }}</p>
+                                @enderror
+
+                                <p class=" text-gray-400 dark:text-gray-500 text-xs col-span-2 pl-2">Not required but
+                                    more pleasant for you when receiving emails ;-)</p>
+                            </div>
+
+                            <div class="flex gap-3">
+                                <input type="email" name="email" value="{{ old('email') }}"
+                                    class="grow bg-transparent outline-none border-none focus:outline-none focus:border-none border-b border-red-800 text-gray-500"
+                                    required placeholder="Your email address*">
+                                <button type="submit"
+                                    class="px-4 py-1 bg-red-50 dark:bg-red-800 hover:bg-red-100 dark:hover:bg-red-700 text-gray-600 dark:text-gray-200 text-gray-500">
+                                    Subscribe
+                                </button>
+                            </div>
+                            @error("email")
+                            <p class="text-red-400 dark:text-red-800 text-xs col-span-2 pl-2">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
-                            class="self-center shrink-0 stroke-red-500 w-6 h-6 mx-6">
+                            class="self-center shrink-0 stroke-red-500 w-6 h-6 mx-6 rotate-90">
                             <path stroke-linecap="round" stroke-linejoin="round"
                                 d="M4.5 12h15m0 0l-6.75-6.75M19.5 12l-6.75 6.75" />
                         </svg>
-                    </a>
+                    </form>
 
                     <div
                         class="scale-100 p-6 bg-white dark:bg-gray-800/50 dark:bg-gradient-to-bl from-gray-700/50 via-transparent dark:ring-1 dark:ring-inset dark:ring-white/5 rounded-lg shadow-2xl shadow-gray-500/20 dark:shadow-none flex motion-safe:hover:scale-[1.01] transition-all duration-250 focus:outline focus:outline-2 focus:outline-red-500">
